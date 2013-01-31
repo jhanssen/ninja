@@ -723,7 +723,7 @@ int NinjaMain(int argc, char** argv) {
 
   int opt;
   while (tool_name.empty() &&
-         (opt = getopt_long(argc, argv, "d:f:j:k:l:nt:vC:h", kLongOptions,
+         (opt = getopt_long(argc, argv, "d:f:j::k:l:nt:vC:h", kLongOptions,
                             NULL)) != -1) {
     switch (opt) {
       case 'd':
@@ -734,7 +734,7 @@ int NinjaMain(int argc, char** argv) {
         input_file = optarg;
         break;
       case 'j':
-        config.parallelism = atoi(optarg);
+        config.parallelism = optarg ? atoi(optarg) : -1;
         break;
       case 'k': {
         char* end;
