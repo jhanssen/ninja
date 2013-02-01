@@ -81,7 +81,7 @@ BuildStatus::BuildStatus(const BuildConfig& config)
       start_time_millis_(GetTimeMillis()),
       started_edges_(0), finished_edges_(0), total_edges_(0),
       have_blank_line_(true), progress_status_format_(NULL),
-      overall_rate_(), current_rate_(config.parallelism) {
+      overall_rate_(), current_rate_() {
 #ifndef _WIN32
   const char* term = getenv("TERM");
   smart_terminal_ = isatty(1) && term && string(term) != "dumb";

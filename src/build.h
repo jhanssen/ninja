@@ -233,7 +233,7 @@ struct BuildStatus {
   };
 
   struct SlidingRateInfo {
-    SlidingRateInfo(int n) : rate_(-1), N(n), last_update_(-1) {}
+    SlidingRateInfo() : rate_(-1), last_update_(-1) {}
 
     void Restart() { stopwatch_.Restart(); }
     double rate() { return rate_; }
@@ -243,9 +243,11 @@ struct BuildStatus {
         return;
       last_update_ = update_hint;
 
-      if (times_.size() == N)
+      enum { MaxTime = 10 };
+      const double elapsed = stopwatch_.Elapsed();
+      while (!times_.empty() && elapsed - times_.front() > MaxTime)
         times_.pop();
-      times_.push(stopwatch_.Elapsed());
+      times_.push(elapsed);
       if (times_.back() != times_.front())
         rate_ = times_.size() / (times_.back() - times_.front());
     }
@@ -253,7 +255,6 @@ struct BuildStatus {
   private:
     double rate_;
     Stopwatch stopwatch_;
-    const size_t N;
     std::queue<double> times_;
     int last_update_;
   };
